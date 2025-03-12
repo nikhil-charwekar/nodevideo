@@ -40,7 +40,7 @@ exports.uploadVideo = async (req, res) => {
 
     const videoPath = req.file.path; // Corrected
     const videoName = path.parse(req.file.filename).name;
-    const outputDir = 'converted_videos';
+    const outputDir = '/tmp/converted_videos';
 
     if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir);
