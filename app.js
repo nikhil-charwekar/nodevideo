@@ -46,9 +46,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('MongoDB connected'))
-    .catch((err) => console.log(err));
+// mongoose.connect(process.env.MONGODB_URI)
+//     .then(() => console.log('MongoDB connected'))
+//     .catch((err) => console.log(err));
 
 // Swagger setup
 setupSwaggerUI(app);
@@ -59,6 +59,6 @@ app.use('/category', categoryRoutes);
 app.use('/video', videoRoutes);
 
 // This is REQUIRED for IISNODE to work
-const server = app.listen(process.env.PORT || 3000, '0.0.0.0', () => {
-    console.log("Server is listening on port 3000");
-});
+// const server = app.listen(process.env.PORT || 3000, '0.0.0.0', () => {
+//     console.log("Server is listening on port 3000");
+// });
