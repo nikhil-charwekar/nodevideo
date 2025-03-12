@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>HLS Player</title>
+</head>
+
+<body>
+    <video id="video_qmsrs" width="300" height="300" controls></video>
+    <video id="video1" width="300" height="300" controls></video>
+    <video id="video3" width="300" height="300" controls></video>
+    <video id="video4" width="300" height="300" controls></video>
+    <video id="video5" width="300" height="300" controls></video>
+    <!-- <video id="video2" width="200" height="200" controls></video>
+    <video id="video3" width="200" height="200" controls></video> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+
+
+        const video_qmsrs = document.getElementById('video_qmsrs');
+        const videoSrc_qmsrs = 'https://vz-4c291d14-745.b-cdn.net/2d646d8f-6025-46c5-9563-2f88cf457669/playlist.m3u8';
+
+        if (Hls.isSupported()) {
+            const hls = new Hls();
+
+            hls.loadSource(videoSrc_qmsrs);
+            hls.attachMedia(video_qmsrs);
+            hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                video_qmsrs.play();
+            });
+        } else if (video_qmsrs.canPlayType('application/vnd.apple.mpegurl')) {
+            video_qmsrs.src = video_qmsrs;
+            video_qmsrs.addEventListener('loadedmetadata', () => {
+                video_qmsrs.play();
+            });
+        }
+
+
+
+        const video1 = document.getElementById('video1');
+        const videoSrc1 = '/video/output1.m3u8';
+
+        if (Hls.isSupported()) {
+            const hls = new Hls();
+
+            hls.loadSource(videoSrc1);
+            hls.attachMedia(video1);
+            hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                video.play();
+            });
+        } else if (video1.canPlayType('application/vnd.apple.mpegurl')) {
+            video1.src = videoSrc1;
+            video1.addEventListener('loadedmetadata', () => {
+                video1.play();
+            });
+        }
+
+
+        const video3 = document.getElementById('video3');
+        const videoSrc3 = '/video/output3.m3u8';
+
+        if (Hls.isSupported()) {
+            const hls = new Hls();
+
+            hls.loadSource(videoSrc3);
+            hls.attachMedia(video3);
+            hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                video3.play();
+            });
+        } else if (video3.canPlayType('application/vnd.apple.mpegurl')) {
+            video3.src = videoSrc3;
+            video3.addEventListener('loadedmetadata', () => {
+                video3.play();
+            });
+        }
+
+        const video4 = document.getElementById('video4');
+        const videoSrc4 = '/video/output4.m3u8';
+
+        if (Hls.isSupported()) {
+            const hls = new Hls();
+
+            hls.loadSource(videoSrc4);
+            hls.attachMedia(video4);
+            hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                video4.play();
+            });
+        } else if (video4.canPlayType('application/vnd.apple.mpegurl')) {
+            video4.src = videoSrc4;
+            video4.addEventListener('loadedmetadata', () => {
+                video4.play();
+            });
+        }
+
+
+        const video5 = document.getElementById('video5');
+        const videoSrc5 = '/video/output5.m3u8';
+
+        if (Hls.isSupported()) {
+            const hls = new Hls();
+
+            hls.loadSource(videoSrc5);
+            hls.attachMedia(video5);
+            hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                video5.play();
+            });
+
+        } else if (video5.canPlayType('application/vnd.apple.mpegurl')) {
+            video5.src = videoSrc5;
+            video5.addEventListener('loadedmetadata', () => {
+                video5.play();
+            });
+        }
+
+
+    </script>
+</body>
+
+</html>
