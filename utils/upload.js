@@ -1,16 +1,19 @@
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');  // Add this line to import 'fs'
+const fs = require('fs');
 
+// Use `/tmp` instead of `uploads/videos` (Vercel allows writing only in `/tmp`)
+const uploadDir = '/tmp/uploads/videos';
+
+// Ensure the directory exists before saving files
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 // Configure storage settings for multer
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const uploadDir = 'uploads/videos'; // Directory for uploaded videos
-        if (!fs.existsSync(uploadDir)) {
-            fs.mkdirSync(uploadDir, { recursive: true });
-        }
-        cb(null, uploadDir); // Save file in the 'uploads/videos' directory
+        cb(null, uploadDir); // Save file in the `/tmp/uploads/videos` directory
     },
     filename: (req, file, cb) => {
         const ext = path.extname(file.originalname);
