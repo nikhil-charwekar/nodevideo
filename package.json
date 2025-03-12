@@ -4,11 +4,12 @@
   "description": "Express, HLS",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "vercel-build": "node app.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/HoseungJang/express-hls-example.git"
+    "url": "git+https://github.com/nikhil-charwekar/nodevideo.git"
   },
   "author": "HoseungJang",
   "license": "ISC",
