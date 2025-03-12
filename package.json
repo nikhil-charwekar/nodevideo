@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/HoseungJang/express-hls-example#readme",
   "dependencies": {
-    "@ffmpeg-installer/ffmpeg": "^1.0.20",
+    "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "axios": "^1.8.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
