@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 const ffmpeg = require('fluent-ffmpeg');
-const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 const axios = require('axios');
 
-// ✅ Set FFmpeg Path Dynamically
+// ✅ Use Vercel's built-in FFmpeg
+const ffmpegPath = '/usr/bin/ffmpeg';
 ffmpeg.setFfmpegPath(ffmpegPath);
 console.log("Using FFmpeg Path:", ffmpegPath);
 
@@ -13,7 +13,7 @@ const BUNNY_STORAGE_ZONE = 'eportdemostorage';
 const BUNNY_STORAGE_API_KEY = 'a42483dc-45e5-42f6-ad9df3e9947f-0e3a-4bd3';
 const BUNNY_PULL_ZONE = 'excellenceportvideo.b-cdn.net';
 
-// ✅ Upload to BunnyCDN Function
+// ✅ Upload to BunnyCDN
 async function uploadToBunny(filePath, fileName, retries = 3) {
     const url = `https://storage.bunnycdn.com/${BUNNY_STORAGE_ZONE}/${fileName}`;
     const headers = {
@@ -24,29 +24,28 @@ async function uploadToBunny(filePath, fileName, retries = 3) {
     for (let attempt = 1; attempt <= retries; attempt++) {
         try {
             const fileData = fs.createReadStream(filePath);
-            const response = await axios.put(url, fileData, { headers, timeout: 30000 }); // 30s timeout
+            const response = await axios.put(url, fileData, { headers, timeout: 30000 });
             console.log(`✅ Uploaded: ${fileName} - Status:`, response.status);
             return `https://${BUNNY_PULL_ZONE}/${fileName}`;
         } catch (error) {
             console.error(`❌ Upload failed for ${fileName} (Attempt ${attempt}):`, error.message);
             if (attempt === retries) throw new Error(`Failed to upload ${fileName} after ${retries} attempts`);
-            await new Promise(res => setTimeout(res, 5000)); // Wait 5s before retrying
+            await new Promise(res => setTimeout(res, 5000));
         }
     }
 }
 
-// ✅ Video Upload & Processing Function
+// ✅ Video Upload & Processing
 exports.uploadVideo = async (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).json({ message: 'No video file uploaded' });
         }
 
-        const videoPath = req.file.path; // Path of uploaded file
+        const videoPath = req.file.path;
         const videoName = path.parse(req.file.filename).name;
-        const outputDir = path.join('/tmp', 'converted_videos'); // ✅ Use /tmp for cloud environments
+        const outputDir = path.join('/tmp', 'converted_videos'); // ✅ Use /tmp on Vercel
 
-        // ✅ Ensure /tmp/converted_videos exists
         if (!fs.existsSync(outputDir)) {
             fs.mkdirSync(outputDir, { recursive: true });
         }
@@ -78,12 +77,12 @@ exports.uploadVideo = async (req, res) => {
                     // ✅ Upload .m3u8 file
                     const m3u8Url = await uploadToBunny(outputM3U8, `videos/${videoName}.m3u8`);
 
-                    // ✅ Upload .ts files SEQUENTIALLY (to avoid Bunny.net rate limits)
+                    // ✅ Upload .ts files SEQUENTIALLY
                     const tsFiles = fs.readdirSync(outputDir).filter(file => file.startsWith(videoName) && file.endsWith('.ts'));
 
                     for (const tsFile of tsFiles) {
                         await uploadToBunny(path.join(outputDir, tsFile), `videos/${tsFile}`);
-                        await new Promise(res => setTimeout(res, 1000)); // 🔹 1s delay between uploads
+                        await new Promise(res => setTimeout(res, 1000)); // 1s delay
                     }
 
                     res.status(200).json({
